@@ -1,0 +1,920 @@
+{
+  "text": "",
+  "logic": {
+    "load records": {
+      "steps": [
+        {
+          "text": "Search criteria entered?",
+          "answers": {
+            "plugin": "Conditions:comparison",
+            "variable": "mainScreen[\"searchValue\"]",
+            "type": "truthy",
+            "and-or": ""
+          },
+          "isStructureStart": true
+        },
+        {
+          "text": "Search records",
+          "answers": {
+            "plugin": "Database:get-records",
+            "tables": "employees",
+            "columns": "employeeNumber,lastName,firstName,extension",
+            "criteria": "lastName LIKE CONCAT(CONCAT('%', ?), '%') OR firstName LIKE CONCAT(CONCAT('%', ?), '%') OR extension LIKE CONCAT(CONCAT('%', ?), '%')",            
+            "add_order_by": false,
+            "limit": "5000",
+            "destination": "Grid",
+            "grid": "grid",
+            "parameter": "mainScreen[\"searchValue\"]",
+            "parameter_2": "mainScreen[\"searchValue\"]",
+            "parameter_3": "mainScreen[\"searchValue\"]"
+          }
+        },
+        {
+          "isStructureEnd": true
+        },
+        {
+          "text": "Otherwise",
+          "answers": {
+            "plugin": "Conditions:else"
+          },
+          "isStructureStart": true
+        },
+        {
+          "text": "Load all records",
+          "answers": {
+            "plugin": "Database:get-records",
+            "tables": "employees",
+            "columns": "employeeNumber,lastName,firstName,extension",
+            "criteria": "",
+            "add_order_by": false,
+            "limit": "5000",
+            "destination": "Grid",
+            "grid": "grid"
+          }
+        },
+        {
+          "isStructureEnd": true
+        }
+      ]
+    },
+    "add button click": {
+      "steps": [
+        {
+          "text": "Show detail screen for adding a record",
+          "answers": {
+            "plugin": "Navigation:show-screen",
+            "screen": "detailScreen",
+            "populate": true,
+            "source": "Specify each value individually",
+            "screen-values": {
+              "dialogTitle": "'Add Record'",
+              "editMode": "false",
+              "employeeNumberKey": "0",
+              "lastName": "''",
+              "firstName": "''",
+              "extension": "''",
+              "email": "''",
+              "officeCode": "''",
+              "reportsTo": "0",
+              "jobTitle": "''"
+            }
+          }
+        }
+      ]
+    },
+    "clear search": {
+      "steps": [
+        {
+          "text": "Clear search value",
+          "answers": {
+            "plugin": "Program Data:set-screen-fields",
+            "screen": "mainScreen",
+            "source": "Specify each value individually",
+            "screen-values": {
+              "searchValue": "''"
+            }
+          }
+        }
+      ]
+    },
+    "edit icon click": {
+      "steps": [
+        {
+          "text": "Retrieve record",
+          "answers": {
+            "plugin": "Database:get-record",
+            "tables": "employees",
+            "columns": "lastName,firstName,extension,email,officeCode,reportsTo,jobTitle",
+            "criteria": "employeeNumber = ?",
+            "destination": "Screen",
+            "screen": "detailScreen",
+            "parameter": "activeGridRecord[\"employeeNumber\"]"
+          }
+        },
+        {
+          "text": "Show edit window",
+          "answers": {
+            "plugin": "Navigation:show-screen",
+            "screen": "detailScreen",
+            "populate": true,
+            "source": "Specify each value individually",
+            "screen-values": {
+              "dialogTitle": "'Edit Record'",
+              "editMode": "true",
+              "employeeNumberKey": "activeGridRecord[\"employeeNumber\"]"
+            }
+          }
+        }
+      ]
+    },
+    "delete icon click": {
+      "steps": [
+        {
+          "text": "Ask to confirm",
+          "answers": {
+            "plugin": "Navigation:show-message-box",
+            "title": "Delete Record",
+            "message": "Are you sure?",
+            "icon": "question",
+            "button1": "Yes",
+            "button2": "No",
+            "button3": "",
+            "button4": "",
+            "button5": "",
+            "capture_response": true,
+            "destination": "Work variable",
+            "work_variable": "sure"
+          }
+        },
+        {
+          "text": "If sure",
+          "answers": {
+            "plugin": "Conditions:comparison",
+            "variable": "sure",
+            "type": "==",
+            "value": "'Yes'",
+            "and-or": ""
+          },
+          "isStructureStart": true
+        },
+        {
+          "text": "Delete record",
+          "answers": {
+            "plugin": "Database:delete-records",
+            "table": "employees",
+            "criteria": "employeeNumber = ?",
+            "parameter": "activeGridRecord[\"employeeNumber\"]"
+          }
+        },
+        {
+          "text": "Any problems?",
+          "answers": {
+            "plugin": "Conditions:success",
+            "not": true
+          },
+          "isStructureStart": true
+        },
+        {
+          "text": "Show message",
+          "answers": {
+            "plugin": "Navigation:show-message-box",
+            "title": "Error",
+            "message": "Record could not be deleted.\r\n<br/>\r\n<br/>\r\n${_error.message}",
+            "icon": "error",
+            "button1": "",
+            "button2": "",
+            "button3": "",
+            "button4": "",
+            "button5": "",
+            "capture_response": false
+          }
+        },
+        {
+          "isStructureEnd": true
+        },
+        {
+          "isStructureEnd": true
+        }
+      ]
+    },
+    "save button click": {
+      "steps": [
+        {
+          "text": "Update/insert record",
+          "answers": {
+            "plugin": "Database:update-insert-record",
+            "table": "employees",
+            "criteria": "employeeNumber = ?",
+            "parameter": "detailScreen[\"employeeNumberKey\"]",
+            "record_source": "Specify each column value individually",
+            "column-values": {
+              "lastName": "detailScreen[\"lastName\"]",
+              "firstName": "detailScreen[\"firstName\"]",
+              "extension": "detailScreen[\"extension\"]",
+              "email": "detailScreen[\"email\"]",
+              "officeCode": "detailScreen[\"officeCode\"]",
+              "reportsTo": "detailScreen[\"reportsTo\"]",
+              "jobTitle": "detailScreen[\"jobTitle\"]"
+            }
+          }
+        },
+        {
+          "text": "Any problems?",
+          "answers": {
+            "plugin": "Conditions:success",
+            "not": true
+          },
+          "isStructureStart": true
+        },
+        {
+          "text": "Show message",
+          "answers": {
+            "plugin": "Navigation:show-message-box",
+            "title": "Error",
+            "message": "Record could not be saved.\r\n<br/>\r\n<br/>\r\n${_error.message}",
+            "icon": "error",
+            "button1": "",
+            "button2": "",
+            "button3": "",
+            "button4": "",
+            "button5": "",
+            "capture_response": false
+          }
+        },
+        {
+          "isStructureEnd": true
+        },
+        {
+          "text": "Go back",
+          "answers": {
+            "plugin": "Navigation:show-screen",
+            "screen": "mainScreen",
+            "populate": false
+          }
+        }
+      ]
+    },
+    "cancel button click": {
+      "steps": [
+        {
+          "text": "Go back",
+          "answers": {
+            "plugin": "Navigation:show-screen",
+            "screen": "mainScreen",
+            "populate": false
+          }
+        }
+      ]
+    }
+  },
+  "formats": [
+    {
+      "screen": {
+        "record format name": "mainScreen",
+        "initial routine": {
+          "routine": "load records",
+          "designValue": "load records"
+        },
+        "description": "List or Search Records"
+      },
+      "items": [
+        {
+          "id": "CenteringLayout",
+          "field type": "layout",
+          "left": "calc(50% - 440px)",
+          "top": "20px",
+          "template": "simple container",
+          "height": "510px",
+          "width": "880px",
+          "center horizontally": "true",
+          "locked in place": "true"
+        },
+        {
+          "id": "SearchBox",
+          "field type": "textbox",
+          "css class": "blueprint-defaults",
+          "left": "30px",
+          "top": "25px",
+          "width": "345px",
+          "height": "25px",
+          "css class 2": "blueprint-textbox",
+          "value": {
+            "fieldName": "searchValue",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "dataType": "string",
+            "formatting": "Text",
+            "textTransform": "none",
+            "designValue": "[searchValue]"
+          },
+          "layout": "CenteringLayout",
+          "container": "1"
+        },
+        {
+          "id": "SearchButton",
+          "field type": "graphic button",
+          "css class": "blueprint-button",
+          "value": "Search",
+          "top": "25px",
+          "width": "100px",
+          "icon position": "left",
+          "css class 2": "blueprint-alt-defaults",
+          "css class 3": "no-icon",
+          "height": "25px",
+          "icon": "material:search",
+          "left": "390px",
+          "response": {
+            "fieldName": "searchButton",
+            "customTrue": "",
+            "customFalse": "",
+            "dataType": "indicator",
+            "formatting": "Indicator",
+            "indFormat": "1 / 0"
+          },
+          "layout": "CenteringLayout",
+          "container": "1"
+        },
+        {
+          "id": "AddButton",
+          "field type": "graphic button",
+          "css class": "blueprint-button",
+          "value": "Add",
+          "left": "30px",
+          "top": "80px",
+          "width": "80px",
+          "icon position": "left",
+          "css class 2": "blueprint-alt-defaults",
+          "css class 3": "no-icon",
+          "height": "25px",
+          "onclick": {
+            "routine": "add button click",
+            "designValue": "add button click"
+          },
+          "icon": "material:playlist_add",
+          "layout": "CenteringLayout",
+          "container": "1"
+        },
+        {
+          "id": "Grid",
+          "field type": "grid",
+          "css class": "blueprint-grid",
+          "left": "25px",
+          "top": "75px",
+          "number of rows": "10",
+          "number of columns": "4",
+          "column widths": "94,312,312,112",
+          "column headings": ",Last Name,First Name,Extension",
+          "header height": "35",
+          "row height": "39",
+          "height": "386px",
+          "width": "830px",
+          "css class 2": "blueprint-defaults",
+          "visibility": "visible",
+          "border color": "transparent",
+          "record format name": "grid",
+          "xlsx export": "true",
+          "position at top": "true",
+          "filter option": "true",
+          "sortable columns": "true",
+          "hide columns option": "true",
+          "description": "Grid of Records",
+          "subfile record number": {
+            "fieldName": "topRecordNumber",
+            "dataLength": "5",
+            "decPos": "0",
+            "curSym": "",
+            "dataType": "zoned",
+            "formatting": "Number",
+            "negNum": "-999.00",
+            "units": ""
+          },
+          "subfile return rrn": {
+            "fieldName": "topRecordNumber",
+            "dataLength": "5",
+            "decPos": "0",
+            "curSym": "",
+            "dataType": "zoned",
+            "formatting": "Number",
+            "negNum": "-999.00",
+            "units": ""
+          },
+          "layout": "CenteringLayout",
+          "container": "1"
+        },
+        {
+          "id": "ClearIcon",
+          "field type": "icon",
+          "icon": "material:clear",
+          "left": "350px",
+          "top": "25px",
+          "z index": "22",
+          "cursor": "pointer",
+          "onclick": {
+            "routine": "clear search",
+            "designValue": "clear search"
+          },
+          "height": "25px",
+          "layout": "CenteringLayout",
+          "container": "1"
+        },
+        {
+          "id": "EditIcon",
+          "field type": "icon",
+          "left": "15px",
+          "top": "5px",
+          "icon": "fontAwesome-solid:edit",
+          "color": "#0099CC",
+          "cursor": "pointer",
+          "tool tip": "Edit record...",
+          "onclick": {
+            "routine": "edit icon click",
+            "designValue": "edit icon click"
+          },
+          "user defined data": {
+            "fieldName": "employeeNumber",
+            "refField": "employeeNumber employees",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "dataType": "reference",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "grid": "Grid",
+          "column": "0"
+        },
+        {
+          "id": "DeleteIcon",
+          "field type": "icon",
+          "left": "50px",
+          "top": "5px",
+          "icon": "material:delete_forever",
+          "color": "#FF0000",
+          "cursor": "pointer",
+          "tool tip": "Delete record...",
+          "onclick": {
+            "routine": "delete icon click",
+            "designValue": "delete icon click"
+          },
+          "user defined data": {
+            "fieldName": "employeeNumber",
+            "refField": "employeeNumber employees",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "dataType": "reference",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "grid": "Grid",
+          "column": "0"
+        },
+        {
+          "field type": "output field",
+          "css class": "outputField",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-output-field",
+          "value": {
+            "fieldName": "lastName",
+            "designValue": "[lastName]",
+            "refField": "lastName employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "10px",
+          "left": "10px",
+          "id": "lastName",
+          "grid": "Grid",
+          "column": "1"
+        },
+        {
+          "field type": "output field",
+          "css class": "outputField",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-output-field",
+          "value": {
+            "fieldName": "firstName",
+            "designValue": "[firstName]",
+            "refField": "firstName employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "10px",
+          "left": "10px",
+          "id": "firstName",
+          "grid": "Grid",
+          "column": "2"
+        },
+        {
+          "field type": "output field",
+          "css class": "outputField",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-output-field",
+          "value": {
+            "fieldName": "extension",
+            "designValue": "[extension]",
+            "refField": "extension employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "10px",
+          "left": "10px",
+          "id": "extension",
+          "grid": "Grid",
+          "column": "3"
+        }
+      ]
+    },
+    {
+      "screen": {
+        "record format name": "detailScreen",
+        "animated screen": "new",
+        "animation": "slide-down",
+        "overlay screens": "true",
+        "description": "Add / Edit Records",
+        "user defined data": {
+          "fieldName": "employeeNumberKey",
+          "refField": "employeeNumber employees",
+          "trimLeading": "false",
+          "trimTrailing": "true",
+          "blankFill": "false",
+          "rjZeroFill": "false",
+          "dataType": "reference",
+          "formatting": "Text",
+          "textTransform": "none"
+        },
+        "user defined data 2": {
+          "fieldName": "editMode",
+          "customTrue": "",
+          "customFalse": "",
+          "dataType": "indicator",
+          "formatting": "Indicator",
+          "indFormat": "true / false"
+        }
+      },
+      "items": [
+        {
+          "id": "DetailPanel",
+          "field type": "layout",
+          "css class": "blueprint-defaults",
+          "left": "10%",
+          "top": "40px",
+          "template": "css panel",
+          "header text": {
+            "fieldName": "dialogTitle",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "dataType": "string",
+            "formatting": "Text",
+            "textTransform": "none",
+            "designValue": "[dialogTitle]"
+          },
+          "header theme": "blueprint-light-blue-header",
+          "body theme": "blueprint-white-body",
+          "height": "345px",
+          "width": "80%",
+          "css class 2": "blueprint-panel",
+          "center horizontally": "true",
+          "max width": "800px"
+        },
+        {
+          "id": "lastName_label",
+          "field type": "output field",
+          "css class": "label",
+          "value": "Last Name",
+          "left": "20px",
+          "top": "20px",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-label",
+          "layout": "DetailPanel",
+          "container": "1"
+        },
+        {
+          "field type": "textbox",
+          "height": "25px",
+          "width": "60%",
+          "css class": "blueprint-defaults",
+          "css class 2": "blueprint-textbox",
+          "value": {
+            "fieldName": "lastName",
+            "designValue": "[lastName]",
+            "refField": "lastName employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "15px",
+          "left": "35%",
+          "id": "lastName",
+          "layout": "DetailPanel",
+          "container": "1",
+          "required": "true",
+          "error message location": "top"
+        },
+        {
+          "id": "firstName_label",
+          "field type": "output field",
+          "css class": "label",
+          "value": "First Name",
+          "left": "20px",
+          "top": "50px",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-label",
+          "layout": "DetailPanel",
+          "container": "1"
+        },
+        {
+          "field type": "textbox",
+          "height": "25px",
+          "width": "60%",
+          "css class": "blueprint-defaults",
+          "css class 2": "blueprint-textbox",
+          "value": {
+            "fieldName": "firstName",
+            "designValue": "[firstName]",
+            "refField": "firstName employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "45px",
+          "left": "35%",
+          "id": "firstName",
+          "layout": "DetailPanel",
+          "container": "1",
+          "required": "true",
+          "error message location": "top"
+        },
+        {
+          "id": "extension_label",
+          "field type": "output field",
+          "css class": "label",
+          "value": "Extension",
+          "left": "20px",
+          "top": "80px",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-label",
+          "layout": "DetailPanel",
+          "container": "1"
+        },
+        {
+          "field type": "textbox",
+          "height": "25px",
+          "width": "60%",
+          "css class": "blueprint-defaults",
+          "css class 2": "blueprint-textbox",
+          "value": {
+            "fieldName": "extension",
+            "designValue": "[extension]",
+            "refField": "extension employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "75px",
+          "left": "35%",
+          "id": "extension",
+          "layout": "DetailPanel",
+          "container": "1",
+          "required": "true",
+          "error message location": "top"
+        },
+        {
+          "id": "email_label",
+          "field type": "output field",
+          "css class": "label",
+          "value": "Email",
+          "left": "20px",
+          "top": "110px",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-label",
+          "layout": "DetailPanel",
+          "container": "1"
+        },
+        {
+          "field type": "textbox",
+          "height": "25px",
+          "width": "60%",
+          "css class": "blueprint-defaults",
+          "css class 2": "blueprint-textbox",
+          "value": {
+            "fieldName": "email",
+            "designValue": "[email]",
+            "refField": "email employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "105px",
+          "left": "35%",
+          "id": "email",
+          "layout": "DetailPanel",
+          "container": "1",
+          "required": "true",
+          "error message location": "top",
+          "validate email": "true"
+        },
+        {
+          "id": "officeCode_label",
+          "field type": "output field",
+          "css class": "label",
+          "value": "Office",
+          "left": "20px",
+          "top": "140px",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-label",
+          "layout": "DetailPanel",
+          "container": "1"
+        },
+        {
+          "field type": "select box",
+          "height": "25px",
+          "width": "60%",
+          "css class": "blueprint-defaults",
+          "css class 2": "blueprint-select-box",
+          "value": {
+            "fieldName": "officeCode",
+            "designValue": "[officeCode]",
+            "refField": "officeCode employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "choices database file": "offices",
+          "choice options field": "city",
+          "choice values field": "officeCode",
+          "top": "135px",
+          "left": "35%",
+          "id": "officeCode",
+          "layout": "DetailPanel",
+          "container": "1",
+          "required": "true",
+          "error message location": "top"
+        },
+        {
+          "id": "reportsTo_label",
+          "field type": "output field",
+          "css class": "label",
+          "value": "Reports To",
+          "left": "20px",
+          "top": "170px",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-label",
+          "layout": "DetailPanel",
+          "container": "1"
+        },
+        {
+          "field type": "select box",
+          "height": "25px",
+          "width": "60%",
+          "css class": "blueprint-defaults",
+          "css class 2": "blueprint-select-box",
+          "value": {
+            "fieldName": "reportsTo",
+            "designValue": "[reportsTo]",
+            "refField": "reportsTo employees",
+            "dataType": "reference",
+            "numSep": "false",
+            "zeroBalance": "false",
+            "numBlankFill": "false",
+            "zeroFill": "false",
+            "noExtraSpaces": "false",
+            "curSym": "",
+            "formatting": "Number",
+            "negNum": "-999.00",
+            "units": ""
+          },
+          "choices database file": "employees",
+          "choice options field": "CONCAT(firstName, ' ', lastName)",
+          "choice values field": "employeeNumber",
+          "top": "165px",
+          "left": "35%",
+          "id": "reportsTo",
+          "layout": "DetailPanel",
+          "container": "1",
+          "required": "true",
+          "error message location": "top"
+        },
+        {
+          "id": "jobTitle_label",
+          "field type": "output field",
+          "css class": "label",
+          "value": "Job Title",
+          "left": "20px",
+          "top": "200px",
+          "css class 2": "blueprint-defaults",
+          "css class 3": "blueprint-label",
+          "layout": "DetailPanel",
+          "container": "1"
+        },
+        {
+          "field type": "textbox",
+          "height": "25px",
+          "width": "60%",
+          "css class": "blueprint-defaults",
+          "css class 2": "blueprint-textbox",
+          "value": {
+            "fieldName": "jobTitle",
+            "designValue": "[jobTitle]",
+            "refField": "jobTitle employees",
+            "dataType": "reference",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "195px",
+          "left": "35%",
+          "id": "jobTitle",
+          "layout": "DetailPanel",
+          "container": "1",
+          "required": "true",
+          "error message location": "top"
+        },
+        {
+          "id": "SaveButton",
+          "field type": "graphic button",
+          "css class": "pui-solid-button-yes",
+          "value": "Save",
+          "left": "35%",
+          "top": "250px",
+          "width": "100px",
+          "icon position": "left",
+          "css class 2": "blueprint-defaults",
+          "icon": "material:check",
+          "height": "25px",
+          "onclick": {
+            "routine": "save button click",
+            "designValue": "save button click"
+          },
+          "layout": "DetailPanel",
+          "container": "1"
+        },
+        {
+          "id": "CancelButton",
+          "field type": "graphic button",
+          "css class": "pui-solid-button-no",
+          "value": "Cancel",
+          "left": "calc(35% + 120px)",
+          "top": "250px",
+          "width": "100px",
+          "icon position": "left",
+          "css class 2": "blueprint-defaults",
+          "icon": "material:clear",
+          "height": "25px",
+          "onclick": {
+            "routine": "cancel button click",
+            "designValue": "cancel button click"
+          },
+          "layout": "DetailPanel",
+          "container": "1"
+        }
+      ]
+    }
+  ],
+  "keywords": [],
+  "long name aliases": true
+}

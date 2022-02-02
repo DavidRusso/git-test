@@ -1,0 +1,477 @@
+{
+  "schemas": {
+    "": {
+      "tables": {
+        "employees": {
+          "columns": {
+            "employeeNumber": {
+              "I": {
+                "field type": "textbox",
+                "height": "25px",
+                "width": "150px",
+                "css class": "blueprint-defaults",
+                "css class 2": "blueprint-textbox",
+                "value": {
+                  "fieldName": "employeeNumber",
+                  "longName": "employeeNumber",
+                  "designValue": "[employeeNumber]",
+                  "refField": "employeeNumber employees",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                }
+              },
+              "O": {
+                "field type": "output field",
+                "css class": "outputField",
+                "css class 2": "blueprint-defaults",
+                "css class 3": "blueprint-output-field",
+                "value": {
+                  "fieldName": "employeeNumber",
+                  "longName": "employeeNumber",
+                  "designValue": "[employeeNumber]",
+                  "refField": "employeeNumber employees",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                }
+              },
+              "CRUD": {
+                "unique": true,
+                "grid": false,
+                "heading": "Employee Number",
+                "searchable": false,
+                "detail": false,
+                "label": "Employee Number",
+                "readonly": true
+              }
+            },
+            "officeCode": {
+              "I": {
+                "field type": "select box",
+                "height": "25px",
+                "width": "150px",
+                "css class": "blueprint-defaults",
+                "css class 2": "blueprint-select-box",
+                "value": {
+                  "fieldName": "officeCode",
+                  "designValue": "[officeCode]",
+                  "refField": "officeCode employees",
+                  "dataType": "reference",
+                  "trimLeading": "false",
+                  "trimTrailing": "true",
+                  "blankFill": "false",
+                  "rjZeroFill": "false",
+                  "formatting": "Text",
+                  "textTransform": "none"
+                },
+                "choices database file": "offices",
+                "choice options field": "city",
+                "choice values field": "officeCode"
+              },
+              "O": {
+                "field type": "output field",
+                "css class": "outputField",
+                "css class 2": "blueprint-defaults",
+                "css class 3": "blueprint-output-field",
+                "value": {
+                  "fieldName": "officeCode",
+                  "designValue": "[officeCode]",
+                  "refField": "officeCode employees",
+                  "dataType": "reference",
+                  "trimLeading": "false",
+                  "trimTrailing": "true",
+                  "blankFill": "false",
+                  "rjZeroFill": "false",
+                  "formatting": "Text",
+                  "textTransform": "none"
+                }
+              },
+              "CRUD": {
+                "unique": false,
+                "grid": false,
+                "heading": "Office Code",
+                "searchable": true,
+                "detail": true,
+                "label": "Office",
+                "readonly": false
+              }
+            },
+            "reportsTo": {
+              "I": {
+                "field type": "select box",
+                "height": "25px",
+                "width": "150px",
+                "css class": "blueprint-defaults",
+                "css class 2": "blueprint-select-box",
+                "value": {
+                  "fieldName": "reportsTo",
+                  "designValue": "[reportsTo]",
+                  "refField": "reportsTo employees",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                },
+                "choices database file": "employees",
+                "choice options field": "CONCAT(firstName, ' ', lastName)",
+                "choice values field": "employeeNumber"
+              },
+              "O": {
+                "field type": "output field",
+                "css class": "outputField",
+                "css class 2": "blueprint-defaults",
+                "css class 3": "blueprint-output-field",
+                "value": {
+                  "fieldName": "reportsTo",
+                  "designValue": "[reportsTo]",
+                  "refField": "reportsTo employees",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                }
+              },
+              "CRUD": {
+                "unique": false,
+                "grid": false,
+                "heading": "Reports To",
+                "searchable": false,
+                "detail": true,
+                "label": "Reports To",
+                "readonly": false
+              }
+            }
+          }
+        },
+        "customers": {
+          "columns": {
+            "salesRepEmployeeNumber": {
+              "I": {
+                "field type": "select box",
+                "height": "25px",
+                "width": "150px",
+                "css class": "blueprint-defaults",
+                "css class 2": "blueprint-select-box",
+                "value": {
+                  "fieldName": "salesRepEmployeeNumber",
+                  "longName": "salesRepEmployeeNumber",
+                  "designValue": "[salesRepEmployeeNumber]",
+                  "refField": "salesRepEmployeeNumber customers",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                },
+                "choices database file": "employees",
+                "choice options field": "CONCAT(firstName, ' ', lastName)",
+                "choice values field": "employeeNumber"
+              },
+              "O": {
+                "field type": "output field",
+                "css class": "outputField",
+                "css class 2": "blueprint-defaults",
+                "css class 3": "blueprint-output-field",
+                "value": {
+                  "fieldName": "salesRepEmployeeNumber",
+                  "longName": "salesRepEmployeeNumber",
+                  "designValue": "[salesRepEmployeeNumber]",
+                  "refField": "salesRepEmployeeNumber customers",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                }
+              },
+              "CRUD": {
+                "unique": false,
+                "grid": false,
+                "heading": "Sales Rep #",
+                "searchable": false,
+                "detail": true,
+                "label": "Sales Rep",
+                "readonly": false
+              }
+            }
+          }
+        },
+        "orderdetails": {
+          "columns": {
+            "productCode": {
+              "I": {
+                "field type": "textbox",
+                "height": "25px",
+                "width": "150px",
+                "css class": "blueprint-defaults",
+                "css class 2": "blueprint-textbox",
+                "value": {
+                  "fieldName": "productCode",
+                  "longName": "productCode",
+                  "designValue": "[productCode]",
+                  "refField": "productCode orderdetails",
+                  "dataType": "reference",
+                  "trimLeading": "false",
+                  "trimTrailing": "true",
+                  "blankFill": "false",
+                  "rjZeroFill": "false",
+                  "formatting": "Text",
+                  "textTransform": "none"
+                },
+                "choices database file": "products",
+                "choice options field": "productCode,productName"
+              },
+              "O": {
+                "field type": "output field",
+                "css class": "outputField",
+                "css class 2": "blueprint-defaults",
+                "css class 3": "blueprint-output-field",
+                "value": {
+                  "fieldName": "productCode",
+                  "longName": "productCode",
+                  "designValue": "[productCode]",
+                  "refField": "productCode orderdetails",
+                  "dataType": "reference",
+                  "trimLeading": "false",
+                  "trimTrailing": "true",
+                  "blankFill": "false",
+                  "rjZeroFill": "false",
+                  "formatting": "Text",
+                  "textTransform": "none"
+                }
+              },
+              "CRUD": {
+                "unique": true,
+                "grid": true,
+                "heading": "Product Code",
+                "searchable": true,
+                "detail": true,
+                "label": "Product Code",
+                "readonly": false
+              }
+            }
+          }
+        },
+        "orders": {
+          "columns": {
+            "customerNumber": {
+              "I": {
+                "field type": "select box",
+                "height": "25px",
+                "width": "150px",
+                "css class": "blueprint-defaults",
+                "css class 2": "blueprint-select-box",
+                "value": {
+                  "fieldName": "customerNumber",
+                  "longName": "customerNumber",
+                  "designValue": "[customerNumber]",
+                  "refField": "customerNumber orders",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                },
+                "choices database file": "customers",
+                "choice options field": "customerName",
+                "choice values field": "customerNumber"
+              },
+              "O": {
+                "field type": "output field",
+                "css class": "outputField",
+                "css class 2": "blueprint-defaults",
+                "css class 3": "blueprint-output-field",
+                "value": {
+                  "fieldName": "customerNumber",
+                  "longName": "customerNumber",
+                  "designValue": "[customerNumber]",
+                  "refField": "customerNumber orders",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                }
+              },
+              "CRUD": {
+                "unique": false,
+                "grid": false,
+                "heading": "Customer Number",
+                "searchable": false,
+                "detail": true,
+                "label": "Customer",
+                "readonly": false
+              }
+            }
+          }
+        },
+        "payments": {
+          "columns": {
+            "customerNumber": {
+              "I": {
+                "field type": "select box",
+                "height": "25px",
+                "width": "150px",
+                "css class": "blueprint-defaults",
+                "css class 2": "blueprint-select-box",
+                "value": {
+                  "fieldName": "customerNumber",
+                  "longName": "customerNumber",
+                  "designValue": "[customerNumber]",
+                  "refField": "customerNumber payments",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                },
+                "choices database file": "customers",
+                "choice options field": "customerName",
+                "choice values field": "customerNumber"
+              },
+              "O": {
+                "field type": "output field",
+                "css class": "outputField",
+                "css class 2": "blueprint-defaults",
+                "css class 3": "blueprint-output-field",
+                "value": {
+                  "fieldName": "customerNumber",
+                  "longName": "customerNumber",
+                  "designValue": "[customerNumber]",
+                  "refField": "customerNumber payments",
+                  "dataType": "reference",
+                  "numSep": "false",
+                  "zeroBalance": "false",
+                  "numBlankFill": "false",
+                  "zeroFill": "false",
+                  "noExtraSpaces": "false",
+                  "curSym": "",
+                  "formatting": "Number",
+                  "negNum": "-999.00",
+                  "units": ""
+                }
+              },
+              "CRUD": {
+                "unique": true,
+                "grid": true,
+                "heading": "Customer Number",
+                "searchable": false,
+                "detail": true,
+                "label": "Customer",
+                "readonly": false
+              }
+            }
+          }
+        },
+        "products": {
+          "columns": {
+            "productLine": {
+              "I": {
+                "field type": "select box",
+                "height": "25px",
+                "width": "150px",
+                "css class": "blueprint-defaults",
+                "css class 2": "blueprint-select-box",
+                "value": {
+                  "fieldName": "productLine",
+                  "longName": "productLine",
+                  "designValue": "[productLine]",
+                  "refField": "productLine products",
+                  "dataType": "reference",
+                  "trimLeading": "false",
+                  "trimTrailing": "true",
+                  "blankFill": "false",
+                  "rjZeroFill": "false",
+                  "formatting": "Text",
+                  "textTransform": "none"
+                },
+                "choices database file": "productlines",
+                "choice options field": "productLine"
+              },
+              "O": {
+                "field type": "output field",
+                "css class": "outputField",
+                "css class 2": "blueprint-defaults",
+                "css class 3": "blueprint-output-field",
+                "value": {
+                  "fieldName": "productLine",
+                  "longName": "productLine",
+                  "designValue": "[productLine]",
+                  "refField": "productLine products",
+                  "dataType": "reference",
+                  "trimLeading": "false",
+                  "trimTrailing": "true",
+                  "blankFill": "false",
+                  "rjZeroFill": "false",
+                  "formatting": "Text",
+                  "textTransform": "none"
+                }
+              },
+              "CRUD": {
+                "unique": false,
+                "grid": true,
+                "heading": "Product Line",
+                "searchable": true,
+                "detail": true,
+                "label": "Product Line",
+                "readonly": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

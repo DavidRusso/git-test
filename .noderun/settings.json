@@ -1,0 +1,15 @@
+{
+  "sequence": 50,
+  "template name": "CRUD with Edit Screen",
+  "template category": "No Code / Low Code",
+  "description": "CRUD Application with Detail Edit Screen",
+  "image": "/cloud/template-icons/crud_with_edit_screen.png",
+  "routes": {},
+  "app start": "app.json",
+  "template dir": "crud-with-edit-screen",
+  "current git repository": "",
+  "git repositories": [
+    ""
+  ],
+  "idx": 4
+}
